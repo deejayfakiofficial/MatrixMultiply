@@ -6,81 +6,40 @@
 //
 
 import UIKit
+import MetalPerformanceShaders
 
 class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let arrayOne = createRandomArray(100)
-        let arrayTwo = createRandomArray(100)
-        print(arrayOne)
+        let matrixOne = newMatrix()
+        let matrixTwo = newMatrix()
+        let matrixThree = multiplyMatrix(matrixOne, matrixTwo)
+            print(matrixThree)
     }
     
-    func createRandomArray(_ x: Int) -> [[Int]] {
-        return (0..<x).map {
-            _ in [[Int(arc4random_uniform(100) + 1)], Int(arc4random_uniform(100) + 1])
+    func multiplyMatrix (_ matrixOne: [[Int]], _ matrixTwo: [[Int]]) -> [[Int]] {
+        let size = matrixOne.count
+        var result: [[Int]] = [[Int]](repeating: [Int](repeating: 0, count: size), count: size)
+        for i in 0..<result.count {
+                for j in 0..<matrixOne.count {
+                    for k in 0..<matrixTwo.count {
+                        result[i][j] += matrixOne[i][k] * matrixTwo[k][j]
+                    }
+                }
+            }
+        return result
+    }
+    
+    func newMatrix () -> [[Int]] {
+        var matrix: [[Int]] = []
+        for i in 0..<100 {
+            matrix.append([Int(arc4random_uniform(10))])
+            for _ in 0..<100 {
+                matrix[i].append(contentsOf: [Int(arc4random_uniform(10))])
+            }
         }
+        return matrix
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        let myArrayA: [[Int]] = [[1,2,3],[4,5,6],[7,8,9]]
-//        let myArrayB: [[Int]] = [[11,12,13],[14,15,16],[17,18,19]]
-//
-//        if(myArrayA[0].count != myArrayB.count) {
-//            print("Error.  Arrays are not in the right proportion")
-//        } else {
-//            var myArrayC = Array(repeating: Array(repeating: Int(), count: myArrayB[0].count), count: myArrayA.count)
-//
-//
-//            for var cx = 0, cx < myArrayA.count, cx++ {
-//                for var cy = 0; cy < myArrayB[0].count; cy++ {
-//                    for var i = 0; i < myArrayB.count; i++ {
-//                        myArrayC[cx][cy] += myArrayA[cx][i]*myArrayB[i][cy]
-//                    }
-//                    print("\(myArrayC[cx][cy])  ")
-//                }
-//                print()
-//            }
-//        }
-
