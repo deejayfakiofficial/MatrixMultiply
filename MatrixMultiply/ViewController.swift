@@ -26,15 +26,21 @@ class ViewController: UIViewController {
         var result: [[Int]] = [[Int]](repeating: [Int](repeating: 0, count: size), count: size)
         print("Final matrix is: ")
         for i in 0..<result.count {
-            for j in 0..<matrixOne.count {
-                for k in 0..<matrixTwo.count {
-                    result[i][j] += matrixOne[i][k] * matrixTwo[k][j]
+            let queue = DispatchQueue.global()
+            queue.sync {
+                for j in 0..<matrixOne.count {
+                    let queueTwo = DispatchQueue.global(qos: .default)
+                    queueTwo.sync {
+                        for k in 0..<matrixTwo.count {
+                            result[i][j] += matrixOne[i][k] * matrixTwo[k][j]
+                        }
+                    }
                 }
             }
-//            let queue = DispatchQueue.global()
-//            queue.async {
-//                print(result[i])
-//            }
+            //            let queue = DispatchQueue.global()
+            //            queue.async {
+            //                print(result[i])
+            //            }
         }
         return result
     }
